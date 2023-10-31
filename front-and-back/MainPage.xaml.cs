@@ -6,64 +6,64 @@ using System.Windows.Input;
 
 namespace front_and_back
 {
-    public partial class MainPage : ContentPage
+public partial class MainPage : ContentPage
+{
+    public MainPage()
     {
-        public MainPage()
-        {
-            BindingContext = new MainPageBinding();
-            InitializeComponent();
-        }
+        BindingContext = new MainPageBinding();
+        InitializeComponent();
     }
-    public enum OneHotVisible
+}
+public enum OneHotVisible
+{
+    Front,
+    Back,
+}
+class MainPageBinding : INotifyPropertyChanged
+{
+    public MainPageBinding()
     {
-        Front,
-        Back,
+        TappedCommand = new Command(OnTapped);
     }
-    class MainPageBinding : INotifyPropertyChanged
+    public OneHotVisible OneHotVisible
     {
-        public MainPageBinding()
+        get => _oneHotVisible;
+        set
         {
-            TappedCommand = new Command(OnTapped);
-        }
-        public OneHotVisible OneHotVisible
-        {
-            get => _oneHotVisible;
-            set
+            if (!Equals(_oneHotVisible, value))
             {
-                if (!Equals(_oneHotVisible, value))
-                {
-                    _oneHotVisible = value;
-                    OnPropertyChanged();
-                }
+                _oneHotVisible = value;
+                OnPropertyChanged();
             }
         }
-
-        OneHotVisible _oneHotVisible = 0;
-        public ICommand TappedCommand { get; private set; }
-        private void OnTapped(object o)
-        {
-            OneHotVisible = (OneHotVisible)((((int)OneHotVisible) + 1) % 2);
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName]string caller = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
-        }
     }
 
-    public class OneHotToVisibilityConverterFront : IValueConverter
+    OneHotVisible _oneHotVisible = 0;
+    public ICommand TappedCommand { get; private set; }
+    private void OnTapped(object o)
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-            (value is OneHotVisible oneHotVisible && oneHotVisible == OneHotVisible.Front);
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            => throw new NotImplementedException();
+        OneHotVisible = (OneHotVisible)((((int)OneHotVisible) + 1) % 2);
     }
-
-    public class OneHotToVisibilityConverterBack : IValueConverter
+    public event PropertyChangedEventHandler PropertyChanged;
+    private void OnPropertyChanged([CallerMemberName]string caller = null)
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-            (value is OneHotVisible oneHotVisible && oneHotVisible == OneHotVisible.Back);
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            => throw new NotImplementedException();
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
     }
+}
+
+public class OneHotToVisibilityConverterFront : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+        (value is OneHotVisible oneHotVisible && oneHotVisible == OneHotVisible.Front);
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
+
+public class OneHotToVisibilityConverterBack : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+        (value is OneHotVisible oneHotVisible && oneHotVisible == OneHotVisible.Back);
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
 }
