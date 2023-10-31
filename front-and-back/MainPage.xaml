@@ -32,22 +32,26 @@
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding TappedCommand}" />
             </Grid.GestureRecognizers>
-            <Label
-                IsVisible="{Binding OneHotVisible, Converter={StaticResource FrontConverter}}"
-                Text="Front!"
-                VerticalTextAlignment="Center"
-                HorizontalTextAlignment="Center"
-                BackgroundColor="LightBlue"
-                FontSize="32"
-                HorizontalOptions="Fill" />            
-            <Label
-                IsVisible="{Binding OneHotVisible, Converter={StaticResource BackConverter}}"
-                Text="Back!"
-                VerticalTextAlignment="Center"
-                HorizontalTextAlignment="Center"
-                BackgroundColor="LightGreen"
-                FontSize="32"
-                HorizontalOptions="Fill" />
+            <ContentView
+                IsVisible="{Binding OneHotVisible, Converter={StaticResource FrontConverter}}">
+                <Label
+                    Text="Front!"
+                    VerticalTextAlignment="Center"
+                    HorizontalTextAlignment="Center"
+                    BackgroundColor="LightBlue"
+                    FontSize="32"
+                    HorizontalOptions="Fill" />  
+            </ContentView>
+            <ContentView  
+                IsVisible="{Binding OneHotVisible, Converter={StaticResource BackConverter}}">
+                <Label
+                    Text="Back!"
+                    VerticalTextAlignment="Center"
+                    HorizontalTextAlignment="Center"
+                    BackgroundColor="LightGreen"
+                    FontSize="32"
+                    HorizontalOptions="Fill" />
+            </ContentView>
         </Grid>
         <Label 
             Grid.Row="2"
